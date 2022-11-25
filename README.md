@@ -9,6 +9,8 @@ pip install git+https://github.com/AlexQ0807/backblazewrapper.git
 ### Example - Initialize Wrapper
 
 ```
+    from backblazewrapper.backblazewrapper import BackBlazeWrapper
+
     appkey_id = "XXXXXXXXXX"
     appkey = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     bucket_name = "bucketname"
