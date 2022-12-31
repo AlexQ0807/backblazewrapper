@@ -1,5 +1,6 @@
 import os
 import json
+import requests
 from b2sdk.v1 import InMemoryAccountInfo, B2Api
 
 class BackBlazeWrapper:
@@ -165,10 +166,14 @@ class BackBlazeWrapper:
 
         return upload_success
 
-    def download_file_by_name(self, file_to_download):
+    def fetch_file_content_by_name(self, file_to_download):
         data = None
         try:
-            data = self.bucket.download_file_by_name(file_name=file_to_download)
+            download_url = self.get_download_url(file_to_download=file_to_download)
+            res = requests.get(download_url)
+            data = None
+            if res.status_code == 200:
+                data = res.json()
         except Exception as e:
             raise Exception("Failed to download file from BackBlaze: {}".format(e))
 

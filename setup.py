@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name='backblazewrapper',
-    version='0.1.1',
+    version='0.1.2',
     author='Alex Q',
     author_email='alex.quan0807@gmail.com',
     description='Wrapper for Backblaze',
@@ -14,6 +14,6 @@ setuptools.setup(
     license='MIT',
     packages=['backblazewrapper'],
     install_requires=[
-        "b2sdk",
+        "b2sdk", "requests",
     ],
 )
