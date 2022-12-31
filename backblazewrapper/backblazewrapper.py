@@ -1,3 +1,5 @@
+import os
+import json
 from b2sdk.v1 import InMemoryAccountInfo, B2Api
 
 class BackBlazeWrapper:
@@ -135,3 +137,41 @@ class BackBlazeWrapper:
         except Exception as e:
             raise Exception("Failed to get download auth header from BackBlaze: {}".format(e))
         return header
+
+    def upload_file(self, filepath, upload_filepath=None):
+        upload_success = False
+        try:
+            if upload_filepath is None:
+                upload_filepath = os.path.basename(filepath)
+
+            # Get absolute path
+            with open(filepath, "rb") as file:
+                data = file.read()
+                self.upload_local_file_bytes(data, upload_filepath)
+                upload_success = True
+        except Exception as e:
+            raise Exception("Failed to upload local file to BackBlaze: {}".format(e))
+
+        return upload_success
+
+    def upload_data(self, data, upload_filepath):
+        upload_success = False
+        try:
+            byte_data = bytes(json.dumps(data), encoding='utf8')
+            self.upload_local_file_bytes(byte_data, upload_filepath)
+            upload_success = True
+        except Exception as e:
+            raise Exception("Failed to upload data to BackBlaze: {}".format(e))
+
+        return upload_success
+
+    def download_file_by_name(self, file_to_download):
+        data = None
+        try:
+            data = self.bucket.download_file_by_name(file_name=file_to_download)
+        except Exception as e:
+            raise Exception("Failed to download file from BackBlaze: {}".format(e))
+
+        return data
+
+
